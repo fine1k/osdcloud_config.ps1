@@ -1,0 +1,31 @@
+1. New-OSDCloudWorkSpaceSetupCompleteTemplate - will create SetupComplete.cmd and SetupComplete.ps1 under -Workspacepath
+
+Powershell-Script for creating Shortcut after User Login for Public Desktop (running in System32 Context):
+
+Write-Output "========================================================="
+Write-Output "SetupComplete.ps1 gestartet: Shortcut-Erstellung"
+Write-Output "========================================================="
+
+try {
+    $Shell = New-Object -ComObject WScript.Shell
+    $DesktopPath = "C:\Users\Public\Desktop"   # Public Desktop für alle Benutzer
+    $TargetPath = ""
+    $ShortcutFile = Join-Path $DesktopPath ".lnk"
+
+    $Shortcut = $Shell.CreateShortcut($ShortcutFile)
+    $Shortcut.TargetPath = $TargetPath
+    $Shortcut.IconLocation = "C:\Windows\System32\shell32.dll,220"
+    $Shortcut.Description = ""
+    $Shortcut.Save()
+
+    Write-Output "Shortcut '' wurde erstellt: $ShortcutFile"
+}
+catch {
+    Write-Output "FEHLER beim Erstellen des Shortcuts: $_"
+}
+
+Write-Output "========================================================="
+Write-Output "SetupComplete.ps1 beendet"
+Write-Output "========================================================="
+
+
